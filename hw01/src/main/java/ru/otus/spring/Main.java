@@ -1,33 +1,24 @@
 package ru.otus.spring;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.spring.service.AnswerService;
-import ru.otus.spring.service.QuestionService;
+import ru.otus.spring.exception.QuestionsLoadingException;
+import ru.otus.spring.service.RunnerServiceImpl;
 
-import java.io.IOException;
-import java.util.Collections;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
 
-        QuestionService questionService = context.getBean(QuestionService.class);
-        AnswerService answerService = context.getBean(AnswerService.class);
+        RunnerServiceImpl runnerService = context.getBean("runnerService", RunnerServiceImpl.class);
 
-        questionService.findAll().forEach(q -> {
-            System.out.println(q.getQuestion());
-            try {
-                var answers = answerService.findByQuestionId(q.getId());
-                Collections.shuffle(answers);
-                answers.forEach(a ->
-                        System.out.println(a.getAnswer() + " : " + a.isRight()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("==================");
-        });
+        try {
+            runnerService.run();
+        } catch (QuestionsLoadingException e) {
+            System.out.println("Error during load questions.");
+        }
+
         context.close();
     }
 }
