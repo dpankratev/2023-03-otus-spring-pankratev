@@ -2,8 +2,8 @@ package ru.otus.spring.service;
 
 public interface IOService {
 
-    byte[] input();
+    String input();
 
-    void output(byte[] bytes);
+    void output(String message);
 
 }

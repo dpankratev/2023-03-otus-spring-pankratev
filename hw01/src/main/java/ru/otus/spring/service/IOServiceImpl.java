@@ -1,30 +1,27 @@
 package ru.otus.spring.service;
 
-import java.io.IOException;
-import java.io.OutputStream;
+
+import java.io.PrintStream;
 
 
 public class IOServiceImpl implements IOService {
 
-    private final OutputStream outputStream;
+    private final PrintStream outputStream;
 
-    public IOServiceImpl(OutputStream outputStream) {
+    public IOServiceImpl(PrintStream outputStream) {
         this.outputStream = outputStream;
 
     }
 
     @Override
-    public byte[] input() {
-        return new byte[0];
+    public String input() {
+        return null;
     }
 
     @Override
-    public void output(byte[] bytes) {
-        try {
-            outputStream.write(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void output(String message) {
+
+        outputStream.println(message);
 
     }
 }

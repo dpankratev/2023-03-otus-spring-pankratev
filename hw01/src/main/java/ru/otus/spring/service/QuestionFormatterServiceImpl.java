@@ -4,11 +4,11 @@ import ru.otus.spring.domain.Question;
 
 import java.util.List;
 
-public class FormattedOutputImpl implements FormattedOutput {
+public class QuestionFormatterServiceImpl implements QuestionFormatterService {
 
 
     @Override
-    public String getAllQuestionsWithAnswer(List<Question> questions) {
+    public String convertQuestionsListToString(List<Question> questions) {
         StringBuilder sb = new StringBuilder();
         for (Question question : questions) {
             sb.append("id = ")
@@ -17,13 +17,13 @@ public class FormattedOutputImpl implements FormattedOutput {
                     .append(question.getQuestion())
                     .append("\n")
                     .append("Answers:\n");
-            for (var answer : question.getAnswers().entrySet()) {
-                if (answer.getValue()) {
+            for (var answer : question.getAnswers()) {
+                if (answer.isRight()) {
                     sb.append("Correct: ");
                 } else {
                     sb.append("Incorrect: ");
                 }
-                sb.append(answer.getKey())
+                sb.append(answer.getAnswer())
                         .append("\n");
             }
             sb.append("\n");

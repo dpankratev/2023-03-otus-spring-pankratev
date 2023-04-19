@@ -2,7 +2,7 @@ package ru.otus.spring.domain;
 
 import lombok.Getter;
 
-import java.util.Map;
+import java.util.List;
 
 public class Question {
 
@@ -13,20 +13,13 @@ public class Question {
     private final String question;
 
     @Getter
-    private final Map<String, Boolean> answers;
+    private final List<Answer> answers;
 
-    public Question(int id, String question, Map<String, Boolean> answers) {
+    public Question(int id, String question, List<Answer>answers ) {
         this.id = id;
         this.question = question;
         this.answers = answers;
     }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", question='" + question + '\'' +
-                ", answers=" + answers +
-                '}';
-    }
 }
+
+

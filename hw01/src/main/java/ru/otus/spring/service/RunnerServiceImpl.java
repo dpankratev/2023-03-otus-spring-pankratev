@@ -2,8 +2,6 @@ package ru.otus.spring.service;
 
 import ru.otus.spring.exception.QuestionsLoadingException;
 
-import java.nio.charset.StandardCharsets;
-
 public class RunnerServiceImpl implements RunnerService {
 
 
@@ -11,17 +9,26 @@ public class RunnerServiceImpl implements RunnerService {
 
     private final IOService ioService;
 
-    private final FormattedOutput formattedOutput;
+    private final QuestionFormatterService formattedOutput;
 
-    public RunnerServiceImpl(QuestionService questionService, IOService ioService, FormattedOutput formattedOutput) {
+    public RunnerServiceImpl(QuestionService questionService, IOService ioService,
+                             QuestionFormatterService formattedOutput) {
         this.questionService = questionService;
         this.ioService = ioService;
         this.formattedOutput = formattedOutput;
     }
 
     @Override
-    public void run() throws QuestionsLoadingException {
-        ioService.output(formattedOutput.getAllQuestionsWithAnswer(questionService.findAll())
-                .getBytes(StandardCharsets.UTF_8));
+    public void run() {
+        try {
+            var allQuestions = questionService.findAll();
+            String message = formattedOutput.convertQuestionsListToString(allQuestions);
+            ioService.output(message);
+
+        } catch (QuestionsLoadingException e) {
+            String message = "Error during loading questions: " + e;
+            ioService.output(message);
+        }
+
     }
 }

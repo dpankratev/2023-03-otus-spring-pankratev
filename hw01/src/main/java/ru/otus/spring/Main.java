@@ -1,8 +1,7 @@
 package ru.otus.spring;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.spring.exception.QuestionsLoadingException;
-import ru.otus.spring.service.RunnerServiceImpl;
+import ru.otus.spring.service.RunnerService;
 
 
 public class Main {
@@ -11,13 +10,9 @@ public class Main {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
 
-        RunnerServiceImpl runnerService = context.getBean("runnerService", RunnerServiceImpl.class);
+        RunnerService runnerService = context.getBean("runnerService", RunnerService.class);
 
-        try {
-            runnerService.run();
-        } catch (QuestionsLoadingException e) {
-            System.out.println("Error during load questions.");
-        }
+        runnerService.run();
 
         context.close();
     }

@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="formattedOutput" class="ru.otus.spring.service.FormattedOutputImpl"/>
+    <bean id="formattedOutput" class="ru.otus.spring.service.QuestionFormatterServiceImpl"/>
 
     <bean id="questionDao" class="ru.otus.spring.dao.QuestionDaoCsv">
         <constructor-arg index="0" value="questions.csv"/>
@@ -15,7 +15,7 @@
     </bean>
 
     <bean id="ioService" class="ru.otus.spring.service.IOServiceImpl">
-        <constructor-arg index="0" type="java.io.OutputStream" value="#{T(java.lang.System).out}"/>
+        <constructor-arg index="0" type="java.io.PrintStream" value="#{T(java.lang.System).out}"/>
     </bean>
 
     <bean id="runnerService" class="ru.otus.spring.service.RunnerServiceImpl">
