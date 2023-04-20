@@ -2,7 +2,6 @@ package ru.otus.spring.service;
 
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Question;
-import ru.otus.spring.exception.QuestionsLoadingException;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> findAll() throws QuestionsLoadingException {
+    public List<Question> findAll() {
         return dao.findAll();
     }
 }

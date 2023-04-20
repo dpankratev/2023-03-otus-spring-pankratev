@@ -21,7 +21,7 @@ public class QuestionDaoCsv implements QuestionDao {
 
 
     @Override
-    public List<Question> findAll() throws QuestionsLoadingException {
+    public List<Question> findAll() {
         String line;
         List<Question> questions = new ArrayList<>();
         try (var is = new InputStreamReader(new ClassPathResource(resourceFile).getInputStream());
