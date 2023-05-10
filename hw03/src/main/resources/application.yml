@@ -1,0 +1,12 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+question:
+  file-prefix: "questions"
+
+application:
+  locale: ru_RU
+  number-questions-for-quiz: 5
+  right-answer-to-pass: 4
