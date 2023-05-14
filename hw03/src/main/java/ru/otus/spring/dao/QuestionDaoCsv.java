@@ -1,9 +1,8 @@
 package ru.otus.spring.dao;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.config.AppProps;
+import ru.otus.spring.config.DaoConfig;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.exception.QuestionsLoadingException;
@@ -18,11 +17,8 @@ public class QuestionDaoCsv implements QuestionDao {
 
     private final String resourceFile;
 
-    private final AppProps props;
-
-    public QuestionDaoCsv(@Value("${question.file-prefix}") String resourceFile, AppProps props) {
-        this.resourceFile = resourceFile + "_" + props.getLocale() + ".csv";
-        this.props = props;
+    public QuestionDaoCsv(DaoConfig daoConfig) {
+        this.resourceFile = daoConfig.getFileName();
     }
 
 

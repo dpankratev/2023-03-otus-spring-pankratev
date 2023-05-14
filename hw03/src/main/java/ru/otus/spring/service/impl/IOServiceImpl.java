@@ -1,8 +1,11 @@
-package ru.otus.spring.service;
+package ru.otus.spring.service.impl;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.service.IOService;
 
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -13,9 +16,10 @@ public class IOServiceImpl implements IOService {
 
     private final PrintStream outputStream;
 
-    public IOServiceImpl() {
-        this.scanner = new Scanner(System.in);
-        this.outputStream = System.out;
+    public IOServiceImpl(@Value("#{T(java.lang.System).in}") InputStream in,
+                         @Value("#{T(java.lang.System).out}") PrintStream out) {
+        this.scanner = new Scanner(in);
+        this.outputStream = out;
     }
 
     @Override

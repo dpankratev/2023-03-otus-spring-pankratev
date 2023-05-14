@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Locale;
 
 @ConfigurationProperties(prefix = "application")
-public class AppProps {
+public class AppProps implements DaoConfig, MessageConfig, QuestionConfig {
 
     private Locale locale;
 
@@ -14,27 +14,43 @@ public class AppProps {
 
     private String rightAnswerToPass;
 
-    public Locale getLocale() {
-        return locale;
-    }
+    private String filePrefix;
 
     public void setLocale(Locale locale) {
         this.locale = locale;
-    }
-
-    public int getNumberQuestionsForQuiz() {
-        return Integer.parseInt(numberQuestionsForQuiz);
     }
 
     public void setNumberQuestionsForQuiz(String numberQuestionsForQuiz) {
         this.numberQuestionsForQuiz = numberQuestionsForQuiz;
     }
 
-    public int getRightAnswerToPass() {
-        return Integer.parseInt(rightAnswerToPass);
+    public void setFilePrefix(String filePrefix) {
+        this.filePrefix = filePrefix;
     }
+
 
     public void setRightAnswerToPass(String rightAnswerToPass) {
         this.rightAnswerToPass = rightAnswerToPass;
     }
+
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
+
+    @Override
+    public String getFileName() {
+        return filePrefix + "_" + locale + ".csv";
+    }
+
+    @Override
+    public int getNumberQuestionsForQuiz() {
+        return Integer.parseInt(numberQuestionsForQuiz);
+    }
+
+    @Override
+    public int getRightAnswerToPass() {
+        return Integer.parseInt(rightAnswerToPass);
+    }
+
 }

@@ -1,10 +1,11 @@
-package ru.otus.spring.service;
+package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.config.AppProps;
+import ru.otus.spring.config.QuestionConfig;
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Question;
+import ru.otus.spring.service.QuestionService;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao dao;
 
-    private final AppProps props;
+    private final QuestionConfig questionConfig;
 
 
     @Override
@@ -27,7 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         List<Question> questionList = this.findAll();
 
-        int toIndex = Math.min(questionList.size(), props.getNumberQuestionsForQuiz());
+        int toIndex = Math.min(questionList.size(), questionConfig.getNumberQuestionsForQuiz());
 
         return questionList.subList(0, toIndex);
     }

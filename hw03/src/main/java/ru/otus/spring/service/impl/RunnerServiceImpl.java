@@ -1,15 +1,18 @@
-package ru.otus.spring.service;
+package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.config.AppProps;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Person;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.exception.IncorrectNumberAnswer;
 import ru.otus.spring.exception.QuestionsLoadingException;
+import ru.otus.spring.service.IOService;
+import ru.otus.spring.service.MessageService;
+import ru.otus.spring.service.QuestionFormatterService;
+import ru.otus.spring.service.QuestionService;
+import ru.otus.spring.service.RunnerService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +28,7 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
 
     private final IOService ioService;
 
-    private final AppProps props;
-
-    private final MessageSource messageSource;
+    private final MessageService messageService;
 
 
     @Override
@@ -39,7 +40,7 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
         try {
             questionsForQuiz = questionService.findAllLimit();
         } catch (QuestionsLoadingException e) {
-            String message = String.format("%s: %s",getLocalizedMessage("error.loading"), e);
+            String message = String.format("%s: %s", messageService.getLocalizedMessage("error.loading"), e);
             ioService.output(message);
         }
 
@@ -56,7 +57,7 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
     }
 
     private Person askName() {
-        ioService.output(getLocalizedMessage("ask.name"));
+        ioService.output(messageService.getLocalizedMessage("ask.name"));
         String personName = ioService.input();
         Person person = new Person(personName);
         return person;
@@ -71,7 +72,7 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
             ioService.output(formattedOutput.getQuestionForAsk(question));
 
             do {
-                ioService.output(String.format("%s: ", getLocalizedMessage("print.your-answer")));
+                ioService.output(String.format("%s: ", messageService.getLocalizedMessage("print.your-answer")));
                 String inputAnswer = ioService.input();
                 try {
                     personsAnswers.put(question, this.getAnswer(question, inputAnswer));
@@ -86,7 +87,7 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
     }
 
     private Answer getAnswer(Question question, String inputAnswer) {
-        String message = getLocalizedMessage("print.incorrect-input");
+        String message = messageService.getLocalizedMessage("print.incorrect-input");
         List<Answer> answersList = question.getAnswers();
         int numberAnswer;
 
@@ -103,13 +104,5 @@ public class RunnerServiceImpl implements RunnerService, CommandLineRunner {
         return answersList.get(--numberAnswer);
     }
 
-
-    private String getLocalizedMessage(String code, String[] args) {
-        return messageSource.getMessage(code, args, props.getLocale());
-    }
-
-    private String getLocalizedMessage(String code) {
-        return this.getLocalizedMessage(code, null);
-    }
 
 }
