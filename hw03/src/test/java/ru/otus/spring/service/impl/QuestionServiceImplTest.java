@@ -19,14 +19,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Test QuestionServiceImplTest")
-@TestPropertySource(properties = {"test/application.yml"})
 class QuestionServiceImplTest {
 
-    QuestionDao questionDao;
+    private QuestionDao questionDao;
 
-    QuestionService questionService;
+    private QuestionService questionService;
 
-    QuestionConfig questionConfig;
+    private QuestionConfig questionConfig;
 
 
     @BeforeEach
