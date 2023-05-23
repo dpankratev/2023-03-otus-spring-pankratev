@@ -14,26 +14,20 @@ import ru.otus.spring.service.RunnerService;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
+import static org.springframework.shell.test.ShellAssertions.assertThat;
 
 @DisplayName("Тест ApplicatioShellTest")
+@MockBean(value = {QuestionFormatterService.class, IOService.class, RunnerService.class})
 @ShellTest
 public class ApplicatioShellTest {
 
     @Autowired
-    ShellTestClient client;
+    private ShellTestClient client;
 
-    @MockBean
-    QuestionFormatterService questionFormatterService;
-
-    @MockBean
-    IOService ioService;
-
-    @MockBean
-    RunnerService runnerService;
 
     @DisplayName("должен содержать Start Quiz в команде help")
     @Test
-    void shouldContainsStartQuizInHelpCommand() {
+    public void shouldContainsStartQuizInHelpCommand() {
 
         ShellTestClient.InteractiveShellSession session = client
                 .interactive()
@@ -42,24 +36,22 @@ public class ApplicatioShellTest {
         session.write(session.writeSequence().text("help").carriageReturn().build());
 
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
-            ShellAssertions.assertThat(session.screen())
+            assertThat(session.screen())
                     .containsText("Start Quiz");
         });
 
     }
 
-    @DisplayName("должен содержать корректный ответ в команде print, без прохождения quiz")
+    @DisplayName("Не должен принимать команду print, без прохождения quiz")
     @Test
-    void shouldPrintMessageWhenNoQuizPassed() {
+    public void shouldPrintMessageWhenNoQuizPassed() {
         ShellTestClient.InteractiveShellSession session = client
                 .interactive()
                 .run();
 
-        session.write(session.writeSequence().text("p").carriageReturn().build());
-        await().atMost(1, TimeUnit.SECONDS).untilAsserted(() -> {
-            ShellAssertions.assertThat(session.screen())
-                    .containsText("There is no completed quiz. Press 's' to start quiz.");
+        session.write(session.writeSequence().text("help").carriageReturn().build());
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+            ShellAssertions.assertThat(session.screen()).containsText("* p");
         });
-
     }
 }
